@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Movie Search</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-color: gray;
+    }
+    
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      height: 50vh;
+      justify-content: center;
+      align-content: center;
+    }
+    
+    .top-row,
+    .bottom-row {
+      display: flex;
+      justify-content: center;
+      flex-basis: 100%;
+    }
+    
+    .box {
+      width: 200px;
+      height: 100px;
+      margin: 40px;
+      background-color: lightblue;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #333;
+      font-weight: bold;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      border-radius: 6px;
+    }
+    
+    .image-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 40px;
+    }
+    
+    .image {
+      max-width: 100%;
+      max-height: 100%;
+    }
+    
+    .form-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    
+    .input-field {
+      margin-top: 18px;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+      outline: none;
+    }
+    
+    .search-button {
+      padding: 8px 16px;
+      margin-top: 18px;
+      margin-left: 8px;
+      border: none;
+      background-color: #4CAF50;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    
+    .search-button:hover {
+      background-color: red;
+    }
+  </style>
+  <script>
+    function work() {
+      let title = document.getElementById('search').value;
+
+      if (title === '') {
+        alert('Please insert a name');
+      }
+      if(navigator.onLine === false && title !=''){
+        document.write("No Internet Connection detected.")
+      }
+      
+      //if(navigator.onLine === true ){location.reload(true);}
+
+      const apikey = "b4cdfba7";
+      const url = `https://www.omdbapi.com/?t=${title}&apikey=b4cdfba7`;
+
+
+      fetch(url)
+        .then((response) => response.json())
+        .then((data) => {
+          const imageUrl = data.Poster;
+          console.log(data);
+          box1.innerHTML = `Title: <b>${title}</b>`;
+          box2.innerHTML = `IMDB Rating: <b>${data.imdbRating}</b>`;
+          box3.innerHTML = `Director's Name: <b>${data.Director}</b>`;
+          box4.innerHTML = `Release Year: <b>${data.Year}</b>`;
+
+
+          document.body.style.backgroundImage = `url('${imageUrl}')`;
+          document.body.style.backgroundRepeat = "no-repeat";
+          document.body.style.backgroundSize = "cover";
+          document.body.style.backgroundPosition = "center";
+
+        })
+    }
+    function key() {
+      if (event.key === "Enter") {
+        work();
+      }
+     
+    }
+
+  </script>
+</head>
+<body>
+  <div class="form-container">
+    <input type="text" id="search" class="input-field" onkeydown="key()" placeholder="Enter movie name">
+    <button onclick="work()" class="search-button">Search</button>
+  </div>
+
+  <div class="container" id="image">
+    <div class="top-row">
+      <div class="box" id="box1">Title</div>
+      <div class="box" id="box2">IMDB Rating</div>
+    </div>
+    <div class="bottom-row">
+      <div class="box" id="box3">Release date</div>
+      <div class="box" id="box4">Director</div>
+    </div>
+  </div>
+</body>
+</html>
